@@ -4,6 +4,7 @@ import { CartContext } from "../contexts/CartContext";
 import { AuthContext } from "../contexts/AuthContext";
 import { createOrder } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const CartPage = () => {
   const { cartItems, updateCartItem, clearCart } = useContext(CartContext);
@@ -41,7 +42,7 @@ const CartPage = () => {
     try {
       await createOrder(orderData);
       clearCart();
-      alert("Order placed successfully!");
+      alert("Your order has been placed successfully!");
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Failed to place order");
@@ -61,26 +62,45 @@ const CartPage = () => {
           <p>Dough: {item.selectedDough}</p>
           <p>Price: ${item.price.toFixed(2)}</p>
           <div className="quantity-control">
-            <button onClick={() => updateCartItem(idx, item.quantity - 1)}>
+            <Button
+              variant="outlined"
+              onClick={() => updateCartItem(idx, item.quantity - 1)}
+            >
               -
-            </button>
-            <span>{item.quantity}</span>
-            <button onClick={() => updateCartItem(idx, item.quantity + 1)}>
+            </Button>
+            <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+            <Button
+              variant="outlined"
+              onClick={() => updateCartItem(idx, item.quantity + 1)}
+            >
               +
-            </button>
+            </Button>
           </div>
         </div>
       ))}
       {cartItems.length > 0 && (
         <>
-          <p>Total: ${total.toFixed(2)}</p>
+          <p style={{ marginTop: "20px" }}>Total: ${total.toFixed(2)}</p>
           {error && <p className="error">{error}</p>}
-          <button onClick={handleCheckout} disabled={loading}>
-            {loading ? "Processing..." : "Proceed to Checkout"}
-          </button>
-          <button onClick={clearCart} disabled={loading}>
-            Clear Cart
-          </button>
+          <div style={{ marginTop: "20px" }}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleCheckout}
+              disabled={loading}
+              style={{ marginRight: "10px" }}
+            >
+              {loading ? "Processing..." : "Proceed to Checkout"}
+            </Button>
+            <Button
+              variant="contained"
+              color="warning"
+              onClick={clearCart}
+              disabled={loading}
+            >
+              Clear Cart
+            </Button>
+          </div>
         </>
       )}
     </div>

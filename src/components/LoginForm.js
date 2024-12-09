@@ -4,32 +4,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { login, getProfile } from "../services/api";
 import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
-import {
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Paper,
-  InputAdornment,
-  IconButton,
-  Divider,
-  useTheme,
-} from "@mui/material";
-import {
-  Email as EmailIcon,
-  Lock as LockIcon,
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import { toast } from "react-toastify";
 
 const LoginForm = () => {
-  const theme = useTheme();
   const { login: loginContext } = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -68,121 +50,48 @@ const LoginForm = () => {
   });
 
   return (
-    <Box
-      sx={{
-        minHeight: "calc(100vh - 200px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        py: 4,
-      }}
-    >
-      <Paper
-        elevation={3}
-        sx={{
-          p: 4,
-          width: "100%",
-          maxWidth: 400,
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
+    <Box component="form" onSubmit={formik.handleSubmit} className="auth-form">
+      <Typography variant="h5" textAlign="center" marginBottom={2}>
+        Login
+      </Typography>
+
+      <TextField
+        fullWidth
+        id="email"
+        name="email"
+        label="Email"
+        type="email"
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
+        margin="normal"
+      />
+
+      <TextField
+        fullWidth
+        id="password"
+        name="password"
+        label="Password"
+        type="password"
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.password && Boolean(formik.errors.password)}
+        helperText={formik.touched.password && formik.errors.password}
+        margin="normal"
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        fullWidth
+        sx={{ mt: 3, mb: 2 }}
+        disabled={loading}
       >
-        <Typography variant="h4" component="h1" textAlign="center" gutterBottom>
-          Pizza Time!
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          textAlign="center"
-          sx={{ mb: 3 }}
-        >
-          Sign in to order your favorite pizza
-        </Typography>
-
-        <Box component="form" onSubmit={formik.handleSubmit}>
-          <TextField
-            fullWidth
-            id="email"
-            name="email"
-            label="Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <EmailIcon color="action" />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <TextField
-            fullWidth
-            id="password"
-            name="password"
-            label="Password"
-            type={showPassword ? "text" : "password"}
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-            margin="normal"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon color="action" />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            size="large"
-            disabled={loading}
-            sx={{ mt: 3, mb: 2, py: 1.2 }}
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </Button>
-        </Box>
-
-        <Divider sx={{ my: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            OR
-          </Typography>
-        </Divider>
-
-        <Typography variant="body2" textAlign="center">
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            style={{
-              color: theme.palette.primary.main,
-              textDecoration: "none",
-            }}
-          >
-            Sign Up
-          </Link>
-        </Typography>
-      </Paper>
+        {loading ? "Logging in..." : "Login"}
+      </Button>
     </Box>
   );
 };

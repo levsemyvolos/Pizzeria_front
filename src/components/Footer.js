@@ -10,7 +10,7 @@ const Footer = () => {
     >
       <Toolbar>
         <Typography variant="body1" sx={{ color: "#fff", margin: "0 auto" }}>
-          © 2024 My Pizzeria. All rights reserved.
+          © 2024 Pizzeria. All rights reserved.
         </Typography>
       </Toolbar>
     </AppBar>

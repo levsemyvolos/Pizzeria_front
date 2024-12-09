@@ -41,6 +41,16 @@ export const getProfile = async () => {
   return response.data;
 };
 
+export const updateProfile = async (data) => {
+  const response = await api.put("/api/users/me", data);
+  return response.data;
+};
+
+export const changePassword = async (data) => {
+  const response = await api.put("/api/users/me/password", data);
+  return response.data;
+};
+
 // Pizzas
 export const getPizzas = async (params = {}) => {
   const response = await api.get("/api/pizzas", { params });
@@ -53,13 +63,13 @@ export const createOrder = async (orderData) => {
   return response.data;
 };
 
-export const updateProfile = async (data) => {
-  const response = await api.put("/api/users/me", data);
+export const getMyOrders = async () => {
+  const response = await api.get("/api/orders/my");
   return response.data;
 };
 
-export const changePassword = async (data) => {
-  const response = await api.put("/api/users/me/password", data);
+export const cancelOrder = async (orderId) => {
+  const response = await api.put(`/api/orders/${orderId}/cancel`);
   return response.data;
 };
 

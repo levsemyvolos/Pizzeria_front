@@ -1,5 +1,5 @@
 // src/pages/HomePage.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { getPizzas } from "../services/api";
 import PizzaCard from "../components/PizzaCard";
 import PizzaModal from "../components/PizzaModal";
@@ -13,11 +13,12 @@ import {
   CircularProgress,
   ButtonGroup,
   Pagination,
+  Paper,
 } from "@mui/material";
 import {
-  Sort as SortIcon,
   ArrowUpward as ArrowUpIcon,
   ArrowDownward as ArrowDownIcon,
+  Search as SearchIcon,
 } from "@mui/icons-material";
 import { toast } from "react-toastify";
 
@@ -25,13 +26,14 @@ const HomePage = () => {
   const [pizzas, setPizzas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPizza, setSelectedPizza] = useState(null);
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("id");
   const [sortDir, setSortDir] = useState("asc");
+  const [userHasSorted, setUserHasSorted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const fetchPizzas = async () => {
+  const fetchPizzas = useCallback(async () => {
     setLoading(true);
     try {
       const params = {
@@ -49,13 +51,14 @@ const HomePage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchTerm, sortBy, sortDir, page]);
 
   useEffect(() => {
     fetchPizzas();
-  }, [searchTerm, sortBy, sortDir, page]);
+  }, [fetchPizzas]);
 
   const handleSort = (field) => {
+    setUserHasSorted(true);
     if (sortBy === field) {
       setSortDir(sortDir === "asc" ? "desc" : "asc");
     } else {
@@ -67,39 +70,72 @@ const HomePage = () => {
   return (
     <Container maxWidth="lg">
       <Box sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          All Pizzas
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { xs: "stretch", sm: "center" },
+            justifyContent: "space-between",
+            mb: 4,
+            gap: 2,
+          }}
+        >
+          <Typography variant="h4" component="h1">
+            All Pizzas
+          </Typography>
 
-        <Box sx={{ mb: 4, display: "flex", gap: 2, flexWrap: "wrap" }}>
-          <TextField
-            variant="outlined"
-            label="Search pizza"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            size="small"
-            sx={{ flexGrow: 1, maxWidth: 300 }}
-          />
-          <ButtonGroup variant="contained" size="small">
-            <Button
-              onClick={() => handleSort("name")}
-              startIcon={
-                sortBy === "name" &&
-                (sortDir === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />)
-              }
-            >
-              Sort by Name
-            </Button>
-            <Button
-              onClick={() => handleSort("basePrice")}
-              startIcon={
-                sortBy === "basePrice" &&
-                (sortDir === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />)
-              }
-            >
-              Sort by Price
-            </Button>
-          </ButtonGroup>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              variant="outlined"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              size="small"
+              sx={{ minWidth: 200 }}
+              InputProps={{
+                startAdornment: (
+                  <SearchIcon sx={{ color: "text.secondary", mr: 1 }} />
+                ),
+              }}
+            />
+            <ButtonGroup size="small">
+              <Button
+                variant={
+                  userHasSorted && sortBy === "name" ? "contained" : "outlined"
+                }
+                onClick={() => handleSort("name")}
+                endIcon={
+                  userHasSorted &&
+                  sortBy === "name" &&
+                  (sortDir === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />)
+                }
+              >
+                Name
+              </Button>
+              <Button
+                variant={
+                  userHasSorted && sortBy === "basePrice"
+                    ? "contained"
+                    : "outlined"
+                }
+                onClick={() => handleSort("basePrice")}
+                endIcon={
+                  userHasSorted &&
+                  sortBy === "basePrice" &&
+                  (sortDir === "asc" ? <ArrowUpIcon /> : <ArrowDownIcon />)
+                }
+              >
+                Price
+              </Button>
+            </ButtonGroup>
+          </Box>
         </Box>
 
         {loading ? (
@@ -107,16 +143,31 @@ const HomePage = () => {
             <CircularProgress />
           </Box>
         ) : (
-          <>
-            <Grid container spacing={3}>
-              {pizzas.map((pizza) => (
-                <Grid item xs={12} sm={6} md={4} key={pizza.id}>
-                  <PizzaCard pizza={pizza} onSelect={setSelectedPizza} />
-                </Grid>
-              ))}
-            </Grid>
+          <Grid container spacing={3}>
+            {pizzas.map((pizza) => (
+              <Grid item xs={12} sm={6} lg={4} key={pizza.id}>
+                <PizzaCard pizza={pizza} onSelect={setSelectedPizza} />
+              </Grid>
+            ))}
+          </Grid>
+        )}
 
-            <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+        {!loading && (
+          <Box
+            sx={{
+              mt: 4,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Paper
+              elevation={3}
+              sx={{
+                p: 1,
+                borderRadius: 2,
+                backgroundColor: "white",
+              }}
+            >
               <Pagination
                 count={totalPages}
                 page={page}
@@ -124,8 +175,8 @@ const HomePage = () => {
                 color="primary"
                 size="large"
               />
-            </Box>
-          </>
+            </Paper>
+          </Box>
         )}
       </Box>
 

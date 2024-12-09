@@ -1,6 +1,23 @@
 // src/components/PizzaModal.js
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Typography,
+  Box,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  IconButton,
+  Divider,
+} from "@mui/material";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
+import { toast } from "react-toastify";
 
 const PizzaModal = ({ pizza, onClose }) => {
   const { addToCart } = useContext(CartContext);
@@ -8,8 +25,9 @@ const PizzaModal = ({ pizza, onClose }) => {
   const [selectedDough, setSelectedDough] = useState(pizza.doughTypes[0]);
 
   const calculateTotalPrice = () => {
-    // Простая логика: цена базовая
-    return pizza.basePrice;
+    let price = pizza.basePrice;
+    // Здесь можно добавить логику расчета цены в зависимости от размера и типа теста
+    return price;
   };
 
   const handleAddToCart = () => {
@@ -21,58 +39,116 @@ const PizzaModal = ({ pizza, onClose }) => {
       price: calculateTotalPrice(),
       quantity: 1,
     });
+    toast.success("Pizza added to cart!");
     onClose();
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <button className="close-button" onClick={onClose}>
-          ×
-        </button>
-        <img
+    <Dialog
+      open={true}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        sx: {
+          borderRadius: 2,
+          overflow: "hidden",
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{
+          m: 0,
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h6">{pizza.name}</Typography>
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+
+      <DialogContent dividers>
+        <Box
+          component="img"
           src={pizza.imageUrl}
           alt={pizza.name}
-          style={{ width: "100%", height: "auto" }}
+          sx={{
+            width: "100%",
+            height: 300,
+            objectFit: "cover",
+            borderRadius: 1,
+            mb: 2,
+          }}
         />
-        <h2>{pizza.name}</h2>
-        <p>{pizza.description}</p>
 
-        <div className="options">
-          <div className="option-group">
-            <h4>Size</h4>
-            {pizza.availableSizes.map((size) => (
-              <button
-                key={size}
-                className={size === selectedSize ? "active" : ""}
-                onClick={() => setSelectedSize(size)}
-              >
-                {size}
-              </button>
-            ))}
-          </div>
+        <Typography variant="body1" sx={{ mb: 2 }}>
+          {pizza.description}
+        </Typography>
 
-          <div className="option-group">
-            <h4>Dough</h4>
-            {pizza.doughTypes.map((dough) => (
-              <button
-                key={dough}
-                className={dough === selectedDough ? "active" : ""}
-                onClick={() => setSelectedDough(dough)}
-              >
-                {dough}
-              </button>
-            ))}
-          </div>
-        </div>
+        <Divider sx={{ my: 2 }} />
 
-        <div className="footer">
-          <p>Total: ${calculateTotalPrice().toFixed(2)}</p>
-          <button onClick={handleAddToCart}>Add to Cart</button>
-          <button onClick={onClose}>Close</button>
-        </div>
-      </div>
-    </div>
+        <Typography variant="h6" gutterBottom>
+          Size
+        </Typography>
+        <RadioGroup
+          value={selectedSize}
+          onChange={(e) => setSelectedSize(e.target.value)}
+          row
+        >
+          {pizza.availableSizes.map((size) => (
+            <FormControlLabel
+              key={size}
+              value={size}
+              control={<Radio />}
+              label={size}
+            />
+          ))}
+        </RadioGroup>
+
+        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+          Dough
+        </Typography>
+        <RadioGroup
+          value={selectedDough}
+          onChange={(e) => setSelectedDough(e.target.value)}
+          row
+        >
+          {pizza.doughTypes.map((dough) => (
+            <FormControlLabel
+              key={dough}
+              value={dough}
+              control={<Radio />}
+              label={dough}
+            />
+          ))}
+        </RadioGroup>
+      </DialogContent>
+
+      <DialogActions sx={{ p: 2, justifyContent: "space-between" }}>
+        <Typography variant="h6" color="primary">
+          ${calculateTotalPrice().toFixed(2)}
+        </Typography>
+        <Box>
+          <Button onClick={onClose} sx={{ mr: 1 }}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={handleAddToCart} color="primary">
+            Add to Cart
+          </Button>
+        </Box>
+      </DialogActions>
+    </Dialog>
   );
 };
 

@@ -21,14 +21,24 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle token expiration
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+    }
     return Promise.reject(error);
   }
 );
 
 // Auth
 export const login = async (email, password) => {
-  const response = await api.post("/api/auth/login", { email, password });
-  return response.data;
+  try {
+    const response = await api.post("/api/auth/login", { email, password });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const register = async (data) => {
@@ -37,8 +47,12 @@ export const register = async (data) => {
 };
 
 export const getProfile = async () => {
-  const response = await api.get("/api/users/me");
-  return response.data;
+  try {
+    const response = await api.get("/api/users/me");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateProfile = async (data) => {

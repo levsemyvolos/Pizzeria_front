@@ -2,6 +2,17 @@
 import React, { useContext } from "react";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  IconButton,
+  Divider,
+} from "@mui/material";
+import { Add as AddIcon, Remove as RemoveIcon } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const { cartItems, updateCartItem, clearCart } = useContext(CartContext);
@@ -13,41 +24,79 @@ const Cart = () => {
   );
 
   const handleCheckout = () => {
-    navigate("/checkout"); // Создайте страницу оформления заказа
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+    navigate("/checkout");
   };
 
   return (
-    <div className="cart">
-      <h2>Your Cart</h2>
-      {cartItems.length === 0 && <p>No items in cart.</p>}
-      {cartItems.map((item, idx) => (
-        <div key={idx} className="cart-item">
-          <h3>{item.name}</h3>
-          <p>Size: {item.selectedSize}</p>
-          <p>Dough: {item.selectedDough}</p>
-          {item.extras.length > 0 && (
-            <p>Extras: {item.extras.map((e) => e.name).join(", ")}</p>
-          )}
-          <p>Price: ${item.price.toFixed(2)}</p>
-          <div className="quantity-control">
-            <button onClick={() => updateCartItem(idx, item.quantity - 1)}>
-              -
-            </button>
-            <span>{item.quantity}</span>
-            <button onClick={() => updateCartItem(idx, item.quantity + 1)}>
-              +
-            </button>
-          </div>
-        </div>
-      ))}
-      {cartItems.length > 0 && (
-        <>
-          <p>Total: ${total.toFixed(2)}</p>
-          <button onClick={handleCheckout}>Proceed to Checkout</button>
-          <button onClick={clearCart}>Clear Cart</button>
-        </>
+    <Box sx={{ maxWidth: 800, mx: "auto", p: 2 }}>
+      <Typography variant="h4" gutterBottom>
+        Your Cart
+      </Typography>
+
+      {cartItems.length === 0 ? (
+        <Typography>No items in cart.</Typography>
+      ) : (
+        cartItems.map((item, idx) => (
+          <Card key={idx} sx={{ mb: 2 }}>
+            <CardContent>
+              <Typography variant="h6">{item.name}</Typography>
+              <Typography>Size: {item.selectedSize}</Typography>
+              <Typography>Dough: {item.selectedDough}</Typography>
+              {item.extras?.length > 0 && (
+                <Typography>
+                  Extras: {item.extras.map((e) => e.name).join(", ")}
+                </Typography>
+              )}
+              <Typography>Price: ${item.price.toFixed(2)}</Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                <IconButton
+                  onClick={() => updateCartItem(idx, item.quantity - 1)}
+                  disabled={item.quantity <= 1}
+                >
+                  <RemoveIcon />
+                </IconButton>
+                <Typography sx={{ mx: 2 }}>{item.quantity}</Typography>
+                <IconButton
+                  onClick={() => updateCartItem(idx, item.quantity + 1)}
+                >
+                  <AddIcon />
+                </IconButton>
+              </Box>
+            </CardContent>
+          </Card>
+        ))
       )}
-    </div>
+
+      {cartItems.length > 0 && (
+        <Box sx={{ mt: 3 }}>
+          <Divider sx={{ my: 2 }} />
+          <Typography variant="h6">Total: ${total.toFixed(2)}</Typography>
+          <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleCheckout}
+              fullWidth
+            >
+              Proceed to Checkout
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={clearCart}
+              fullWidth
+            >
+              Clear Cart
+            </Button>
+          </Box>
+        </Box>
+      )}
+    </Box>
   );
 };
 

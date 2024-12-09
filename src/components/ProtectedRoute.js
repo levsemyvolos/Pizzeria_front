@@ -1,5 +1,5 @@
 // src/components/ProtectedRoute.js
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Navigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,8 +8,17 @@ const ProtectedRoute = ({ children }) => {
   const { auth } = useContext(AuthContext);
   const location = useLocation();
 
+  useEffect(() => {
+    // Показываем сообщение только если пользователь не авторизован
+    // и если это не страница логина (чтобы избежать двойного сообщения)
+    if (!auth.token && location.pathname !== "/login") {
+      toast.error("Please login to access this page", {
+        toastId: "auth-required", // Добавляем уникальный ID для предотвращения дубликатов
+      });
+    }
+  }, [auth.token, location.pathname]);
+
   if (!auth.token) {
-    toast.error("Please login to access this page");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

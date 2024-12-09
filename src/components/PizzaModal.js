@@ -65,7 +65,7 @@ const PizzaModal = ({ pizza, onClose }) => {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h6">{pizza.name}</Typography>
+        {pizza.name}
         <IconButton
           onClick={onClose}
           sx={{
@@ -98,7 +98,7 @@ const PizzaModal = ({ pizza, onClose }) => {
 
         <Divider sx={{ my: 2 }} />
 
-        <Typography variant="h6" gutterBottom>
+        <Typography variant="subtitle1" gutterBottom fontWeight="bold">
           Size
         </Typography>
         <RadioGroup
@@ -116,7 +116,12 @@ const PizzaModal = ({ pizza, onClose }) => {
           ))}
         </RadioGroup>
 
-        <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+        <Typography
+          variant="subtitle1"
+          gutterBottom
+          fontWeight="bold"
+          sx={{ mt: 2 }}
+        >
           Dough
         </Typography>
         <RadioGroup
@@ -136,7 +141,7 @@ const PizzaModal = ({ pizza, onClose }) => {
       </DialogContent>
 
       <DialogActions sx={{ p: 2, justifyContent: "space-between" }}>
-        <Typography variant="h6" color="primary">
+        <Typography variant="subtitle1" color="primary" fontWeight="bold">
           ${calculateTotalPrice().toFixed(2)}
         </Typography>
         <Box>

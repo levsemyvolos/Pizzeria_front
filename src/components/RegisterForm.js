@@ -1,9 +1,8 @@
 // src/components/RegisterForm.js
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { register } from "../services/api";
-import { useNavigate, Link } from "react-router-dom";
+import { registerValidationSchema } from "../validation/validation";
+import { Link } from "react-router-dom";
 import {
   TextField,
   Button,
@@ -24,30 +23,10 @@ import {
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import { toast } from "react-toastify";
 
-const RegisterForm = () => {
+const RegisterForm = ({ onSubmit }) => {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const validationSchema = Yup.object({
-    name: Yup.string().required("Name is required"),
-    email: Yup.string()
-      .email("Please enter a valid email address")
-      .required("Email is required"),
-    phone: Yup.string()
-      .matches(
-        /^\+[0-9]{10,}$/,
-        "Phone must start with '+' and have at least 10 digits"
-      )
-      .required("Phone is required"),
-    address: Yup.string().required("Address is required"),
-    password: Yup.string()
-      .min(6, "Password must be at least 6 characters")
-      .required("Password is required"),
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -56,27 +35,10 @@ const RegisterForm = () => {
       phone: "",
       address: "",
       password: "",
+      confirmPassword: "",
     },
-    validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      setLoading(true);
-      try {
-        await register(values);
-        toast.success("Registration successful! You can now log in.");
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
-      } catch (err) {
-        console.error("Registration error:", err.response || err.message);
-        toast.error(
-          err.response?.data?.message ||
-            "Registration failed. Please try again."
-        );
-        setSubmitting(false);
-      } finally {
-        setLoading(false);
-      }
-    },
+    validationSchema: registerValidationSchema,
+    onSubmit,
   });
 
   return (
@@ -229,10 +191,9 @@ const RegisterForm = () => {
             variant="contained"
             fullWidth
             size="large"
-            disabled={loading}
             sx={{ mt: 3, mb: 2, py: 1.2 }}
           >
-            {loading ? "Creating Account..." : "Sign Up"}
+            Sign Up
           </Button>
         </Box>
 

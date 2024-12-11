@@ -9,11 +9,9 @@ const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // Показываем сообщение только если пользователь не авторизован
-    // и если это не страница логина (чтобы избежать двойного сообщения)
     if (!auth.token && location.pathname !== "/login") {
       toast.error("Please login to access this page", {
-        toastId: "auth-required", // Добавляем уникальный ID для предотвращения дубликатов
+        toastId: "auth-required",
       });
     }
   }, [auth.token, location.pathname]);

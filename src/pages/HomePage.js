@@ -59,12 +59,8 @@ const HomePage = () => {
 
   const handleSort = (field) => {
     setUserHasSorted(true);
-    if (sortBy === field) {
-      setSortDir(sortDir === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(field);
-      setSortDir("asc");
-    }
+    setSortDir(sortBy === field && sortDir === "asc" ? "desc" : "asc");
+    setSortBy(field);
   };
 
   return (

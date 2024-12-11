@@ -37,12 +37,8 @@ api.interceptors.response.use(
 
 // Auth
 export const login = async (email, password) => {
-  try {
-    const response = await api.post("/api/auth/login", { email, password });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+  const response = await api.post("/api/auth/login", { email, password });
+  return response.data;
 };
 
 export const register = async (data) => {

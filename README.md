@@ -1,70 +1,234 @@
-# Getting Started with Create React App
+# 🍕 Pizzeria Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive pizzeria ordering system built with React and Material-UI. This application provides a seamless experience for customers to browse pizzas, customize orders, and manage their profiles.
 
-## Available Scripts
+> **🔗 Full-Stack Project**: This frontend application is part of a complete pizza ordering system. For the backend API server, visit: [Pizzeria Backend Server](https://github.com/levsemyvolos/Pizzeria_server)
 
-In the project directory, you can run:
+## 🎯 Overview
 
-### `npm start`
+The Pizzeria Frontend Application is a comprehensive React-based single-page application that delivers an intuitive and engaging user experience for customers to browse pizzas, customize orders, and manage their accounts. This frontend application works in conjunction with the [Pizzeria Backend Server](https://github.com/levsemyvolos/Pizzeria_server) to provide a complete pizza ordering system. The application demonstrates modern frontend development practices with enterprise-level architecture patterns.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+This project showcases advanced React development techniques, including:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Component-driven architecture** with reusable UI components
+- **Context-based state management** for authentication and cart
+- **Progressive Web App** capabilities with responsive design
+- **Type-safe API integration** with comprehensive error handling
+- **Modern UI/UX patterns** following Material Design guidelines
+- **Professional routing** with protected routes and navigation guards
 
-### `npm test`
+## ✨ Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🔐 Authentication System
 
-### `npm run build`
+- User registration and login
+- JWT token-based authentication
+- Protected routes for authenticated users
+- Automatic token refresh and logout on expiry
+- Profile management with password change functionality
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🍕 Pizza Ordering
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Browse available pizzas with high-quality images
+- Search functionality to find specific pizzas
+- Sort pizzas by name or price (ascending/descending)
+- Detailed pizza information with customization options
+- Size and dough type selection
+- Real-time price calculation based on selections
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🛒 Shopping Cart
 
-### `npm run eject`
+- Add multiple pizzas with different configurations
+- Quantity management for each item
+- Automatic item grouping by pizza, size, and dough type
+- Real-time total calculation
+- Persistent cart state during session
+- Checkout functionality with order creation
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 📱 Responsive Design
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Mobile-first responsive design
+- Modern Material-UI components
+- Intuitive navigation with React Router
+- Loading states and error handling
+- Toast notifications for user feedback
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 📍 Additional Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Location page for restaurant information
+- User profile management
+- Order history tracking
+- Order cancellation functionality
+- Pagination for large datasets
 
-## Learn More
+## 🛠️ Technologies Used
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Frontend Core
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **React 18** - Modern React with hooks and functional components
+- **React Router DOM 7** - Client-side routing and navigation
+- **Material-UI (MUI) 6** - Comprehensive React component library
+- **Emotion** - CSS-in-JS styling solution
 
-### Code Splitting
+### State Management & Forms
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **React Context API** - Global state management for auth and cart
+- **Formik 2.4** - Form handling and validation
+- **Yup 1.5** - Schema validation for forms
 
-### Analyzing the Bundle Size
+### HTTP & API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Axios 1.7** - HTTP client with interceptors for API calls
+- **JWT Authentication** - Token-based authentication system
 
-### Making a Progressive Web App
+### UI/UX Enhancements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **React Toastify** - Toast notifications for user feedback
+- **Material-UI Icons** - Comprehensive icon library
+- **Roboto Font** - Google's Material Design font
+- **Date-fns** - Date utility library
 
-### Advanced Configuration
+### Development Tools
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **Create React App** - Zero-configuration React setup
+- **Babel** - JavaScript compiler for modern syntax
+- **ESLint** - Code linting and formatting
 
-### Deployment
+## 🚀 Getting Started
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Prerequisites
 
-### `npm run build` fails to minify
+- Node.js (version 14 or higher)
+- npm or yarn package manager
+- Backend API server running on port 8080
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd pizzeria-frontend
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment**
+
+   - Ensure your backend API is running on `http://localhost:8080`
+   - Update the API URL in `src/services/api.js` if needed
+
+4. **Start the development server**
+
+   ```bash
+   npm start
+   ```
+
+5. **Open your browser**
+   - Navigate to `http://localhost:3000`
+   - The application will automatically reload on code changes
+
+### Available Scripts
+
+```bash
+# Start development server
+npm start
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+
+# Eject from Create React App (not recommended)
+npm run eject
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Header.js       # Navigation header
+│   ├── Footer.js       # Page footer
+│   ├── PizzaCard.js    # Pizza display card
+│   ├── PizzaModal.js   # Pizza customization modal
+│   ├── Cart.js         # Shopping cart component
+│   ├── LoginForm.js    # Login form
+│   ├── RegisterForm.js # Registration form
+│   └── ProtectedRoute.js # Route protection wrapper
+├── contexts/           # React Context providers
+│   ├── AuthContext.js  # Authentication state
+│   └── CartContext.js  # Shopping cart state
+├── pages/              # Page components
+│   ├── HomePage.js     # Main pizza catalog
+│   ├── CartPage.js     # Shopping cart page
+│   ├── LocationPage.js # Restaurant locations
+│   ├── LoginPage.js    # User login
+│   ├── RegisterPage.js # User registration
+│   └── UserPage.js     # User profile
+├── services/           # API and external services
+│   └── api.js          # HTTP client and API calls
+├── validation/         # Form validation schemas
+│   └── validation.js   # Yup validation schemas
+├── App.js              # Main application component
+└── index.js            # Application entry point
+```
+
+## 🔌 API Integration
+
+The application integrates with a RESTful backend API with the following endpoints:
+
+### Authentication
+
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
+
+### User Management
+
+- `GET /api/users/me` - Get user profile
+- `PUT /api/users/me` - Update user profile
+- `PUT /api/users/me/password` - Change password
+
+### Pizza Management
+
+- `GET /api/pizzas` - Get pizzas with pagination and filtering
+
+### Order Management
+
+- `POST /api/orders` - Create new order
+- `GET /api/orders/my` - Get user's order history
+- `PUT /api/orders/:id/cancel` - Cancel order
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the root directory for environment-specific configuration:
+
+```env
+REACT_APP_API_URL=http://localhost:8080
+REACT_APP_ENVIRONMENT=development
+```
+
+## 📦 Build and Deployment
+
+### Production Build
+
+```bash
+npm run build
+```
+
+This creates an optimized production build in the `build/` directory, ready for deployment to any static hosting service.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+_This frontend application demonstrates modern React development practices and serves as a comprehensive example of building scalable, user-friendly web applications with contemporary technologies and design patterns. This is the frontend portion of a full-stack pizzeria application that works in conjunction with the [Pizzeria Backend Server](https://github.com/levsemyvolos/Pizzeria_server) to provide a complete pizza ordering solution._
